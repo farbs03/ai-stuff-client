@@ -10,7 +10,7 @@ const Summarizer = () => {
         setResult(null)
         const formData = link;
         setLoading(true)
-        fetch('https://ai-stuff-backend.herokuapp.com/summarize', 
+        fetch('http://127.0.0.1:5000/summarize', 
           {
             headers: {
               'Accept': 'application/json',
@@ -23,7 +23,8 @@ const Summarizer = () => {
           .then(response => {
             setTimeout(() => setLoading(false), 200)
             setResult(response.result)
-            console.log(response.result)
+            console.log(JSON.stringify(formData))
+            console.log(response)
             console.log(JSON.parse(response.result))
           });
       }
