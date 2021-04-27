@@ -28,9 +28,9 @@ const Summarizer = () => {
           });
       }
     return (
-        <div>
+        <div style={{padding: "16px"}}>
             <h1>Summarizer</h1>
-            <div style={{marginLeft: "auto", marginRight: "auto", width: "50%"}}>
+            <div style={{marginLeft: "auto", marginRight: "auto", width: "80%"}}>
                 <TextField
                     id="outlined-multiline-static"
                     fullWidth
