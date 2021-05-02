@@ -3,10 +3,12 @@ import {Route, Switch} from 'react-router-dom'
 
 import Summarizer from "./Components/Summarizer/Summarizer"
 import Home from "./Components/Home/Home"
+import ImageToText from "./Components/ImageToText/ImageToText"
+import Navbar from "./Components/Shared/Navbar/Navbar"
 
 import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/core'
-import blue from '@material-ui/core/colors/blue';
+import { ThemeProvider, Toolbar } from '@material-ui/core'
+import {blue} from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
   palette: {
@@ -19,11 +21,16 @@ const theme = createMuiTheme({
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Switch>
-        <Route exact path="/summarizer" component={Summarizer}/>
-        <Route exact path="/home" component={Home}/>
-        <Route exact path="/" component={Summarizer}/>
-      </Switch>
+      <Navbar />
+      <Toolbar />
+      <div style={{padding: "16px"}}>
+        <Switch>
+          <Route exact path="/summarizer" component={Summarizer}/>
+          <Route exact path="/imagetotext" component={ImageToText}/>
+          <Route exact path="/home" component={Home}/>
+          <Route exact path="/" component={Home}/>
+        </Switch>
+      </div>
     </ThemeProvider>
   );
 }
