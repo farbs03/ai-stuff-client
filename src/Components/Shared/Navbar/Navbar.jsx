@@ -342,7 +342,7 @@ const Navbar = (props) => {
                                                                             textAlign: "center"
                                                                         }}
                                                                     >
-                                                                        Music Generati
+                                                                        Music Generation
                                                                     </motion.a>
                                                                 </div>
                                                                 </div>
@@ -531,7 +531,7 @@ const Navbar = (props) => {
                                                                             textAlign: "center"
                                                                         }}
                                                                     >
-                                                                        Music Generati
+                                                                        Music Generation
                                                                     </motion.a>
                                                                 </div>
                                                             </div>
