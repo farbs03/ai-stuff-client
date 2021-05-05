@@ -28,6 +28,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from "@material-ui/icons/Close"
 
 const titleVariants = {
     hover: {
@@ -103,11 +104,11 @@ const Navbar = (props) => {
                             variants={titleVariants} 
                             whileHover="hover"
                         >
-                            <Grid container style={{margin: "5px 0px"}}>
+                            <Grid container style={{margin: "10px 0px"}}>
                                 <Grid item>
                                     <img
                                         src={Logo}
-                                        style={{width: "50px", height: "50px"}}
+                                        style={{width: "40px", height: "40px"}}
                                         alt="logo"
                                     />
                                 </Grid>
@@ -125,7 +126,7 @@ const Navbar = (props) => {
                                             fontSize: "24px",
                                             fontWeight: "bold",
                                             letterSpacing: "0.1rem",
-                                            lineHeight: "50px",
+                                            lineHeight: "40px",
                                             marginLeft:"8px"
                                         }}
                                     >
@@ -157,6 +158,9 @@ const Navbar = (props) => {
                                             }}
                                             style={{width: "240px"}}
                                         >
+                                            <IconButton style={{width: "40px", height: "40px", marginRight: "auto", margin: "10px 0px 0px 10px"}} onClick={handleDrawerToggle}>
+                                                <CloseIcon />
+                                            </IconButton>
                                             <div style={{width: "240px", padding: "10px", textAlign: "center"}}>
                                                 <br></br>
                                                 <br></br>
@@ -277,7 +281,7 @@ const Navbar = (props) => {
                                                                             Article Summarizer
                                                                         </motion.a>
                                                                     </div>
-                                                                    <div style={{textAlign: "center"}}>
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
                                                                         <motion.a
                                                                             whileHover={{
                                                                                 color: blue[400]
@@ -293,6 +297,54 @@ const Navbar = (props) => {
                                                                             Image to text
                                                                         </motion.a>
                                                                     </div>
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="#"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Webcam Object Detection
+                                                                    </motion.a>
+                                                                </div>
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="#"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Handwriting Recognition
+                                                                    </motion.a>
+                                                                </div>
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="#"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Music Generati
+                                                                    </motion.a>
+                                                                </div>
                                                                 </div>
                                                             </ClickAwayListener>
                                                         </Paper>
@@ -407,7 +459,7 @@ const Navbar = (props) => {
                                                                         whileHover={{
                                                                             color: blue[400]
                                                                         }}
-                                                                        transition={{ duration: 0.4 }}
+                                                                        transition={{ duration: 0.2 }}
                                                                         href="/summarizer"
                                                                         style={{
                                                                             textDecoration: "none",
@@ -418,12 +470,12 @@ const Navbar = (props) => {
                                                                         Article Summarizer
                                                                     </motion.a>
                                                                 </div>
-                                                                <div style={{textAlign: "center"}}>
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
                                                                     <motion.a
                                                                         whileHover={{
                                                                             color: blue[400]
                                                                         }}
-                                                                        transition={{ duration: 0.4 }}
+                                                                        transition={{ duration: 0.2 }}
                                                                         href="/imagetotext"
                                                                         style={{
                                                                             textDecoration: "none",
@@ -432,6 +484,54 @@ const Navbar = (props) => {
                                                                         }}
                                                                     >
                                                                         Image to text
+                                                                    </motion.a>
+                                                                </div>
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="#"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Webcam Object Detection
+                                                                    </motion.a>
+                                                                </div>
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="#"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Handwriting Recognition
+                                                                    </motion.a>
+                                                                </div>
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="#"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Music Generati
                                                                     </motion.a>
                                                                 </div>
                                                             </div>
