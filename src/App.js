@@ -4,6 +4,8 @@ import {Route, Switch} from 'react-router-dom'
 import Summarizer from "./Components/Summarizer/Summarizer"
 import Home from "./Components/Home/Home"
 import ImageToText from "./Components/ImageToText/ImageToText"
+import Handwriting from "./Components/Handwriting/Handwriting"
+import LinearRegression from "./Components/LinearRegression/LinearRegression"
 import Navbar from "./Components/Shared/Navbar/Navbar"
 
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -33,6 +35,8 @@ const App = () => {
         <Switch>
           <Route exact path="/summarizer" component={Summarizer}/>
           <Route exact path="/imagetotext" component={ImageToText}/>
+          <Route exact path="/handwriting" component={Handwriting}/>
+          <Route exact path="/linreg" component={LinearRegression}/>
           <Route exact path="/home" component={Home}/>
           <Route exact path="/" component={Home}/>
         </Switch>

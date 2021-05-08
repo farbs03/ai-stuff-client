@@ -29,6 +29,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from "@material-ui/icons/Close"
+import Settings from "./Settings"
 
 const titleVariants = {
     hover: {
@@ -298,6 +299,38 @@ const Navbar = (props) => {
                                                                         </motion.a>
                                                                     </div>
                                                                     <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.a
+                                                                            whileHover={{
+                                                                                color: blue[400]
+                                                                            }}
+                                                                            transition={{ duration: 0.2 }}
+                                                                            href="/handwriting"
+                                                                            style={{
+                                                                                textDecoration: "none",
+                                                                                color: "inherit",
+                                                                                textAlign: "center"
+                                                                            }}
+                                                                        >
+                                                                            Handwriting Recognition
+                                                                        </motion.a>
+                                                                    </div>
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.a
+                                                                            whileHover={{
+                                                                                color: blue[400]
+                                                                            }}
+                                                                            transition={{ duration: 0.2 }}
+                                                                            href="/linreg"
+                                                                            style={{
+                                                                                textDecoration: "none",
+                                                                                color: "inherit",
+                                                                                textAlign: "center"
+                                                                            }}
+                                                                        >
+                                                                            Linear Regression
+                                                                        </motion.a>
+                                                                    </div>
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
                                                                     <motion.a
                                                                         whileHover={{
                                                                             color: blue[400]
@@ -313,22 +346,7 @@ const Navbar = (props) => {
                                                                         Webcam Object Detection
                                                                     </motion.a>
                                                                 </div>
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="#"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Handwriting Recognition
-                                                                    </motion.a>
-                                                                </div>
+                                                                
                                                                 <div style={{textAlign: "center", marginBottom: "10px"}}>
                                                                     <motion.a
                                                                         whileHover={{
@@ -486,6 +504,41 @@ const Navbar = (props) => {
                                                                         Image to text
                                                                     </motion.a>
                                                                 </div>
+
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="/handwriting"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Handwriting Recognition
+                                                                    </motion.a>
+                                                                </div>
+
+                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                    <motion.a
+                                                                        whileHover={{
+                                                                            color: blue[400]
+                                                                        }}
+                                                                        transition={{ duration: 0.2 }}
+                                                                        href="/linreg"
+                                                                        style={{
+                                                                            textDecoration: "none",
+                                                                            color: "inherit",
+                                                                            textAlign: "center"
+                                                                        }}
+                                                                    >
+                                                                        Linear Regression
+                                                                    </motion.a>
+                                                                </div>
+
                                                                 <div style={{textAlign: "center", marginBottom: "10px"}}>
                                                                     <motion.a
                                                                         whileHover={{
@@ -502,22 +555,7 @@ const Navbar = (props) => {
                                                                         Webcam Object Detection
                                                                     </motion.a>
                                                                 </div>
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="#"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Handwriting Recognition
-                                                                    </motion.a>
-                                                                </div>
+                                                                
                                                                 <div style={{textAlign: "center", marginBottom: "10px"}}>
                                                                     <motion.a
                                                                         whileHover={{
@@ -541,6 +579,9 @@ const Navbar = (props) => {
                                                 )}
                                                 </Popper>
                                             </div>
+                                        </Grid>
+                                        <Grid item style={{lineHeight: "36px", paddingLeft: "0px"}}>
+                                            <Settings />
                                         </Grid>
                                 </Grid>
                             }
