@@ -1,10 +1,12 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {AppBar, Grid, Link, IconButton } from "@material-ui/core"
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import {NavLink} from 'react-router-dom'
+
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
@@ -20,7 +22,9 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+
 import {motion} from "framer-motion"
+
 import useStyles from "./Styles"
 import blue from '@material-ui/core/colors/blue';
 import Logo from "./aistuff.png"
@@ -29,7 +33,21 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from "@material-ui/icons/Close"
-import Settings from "./Settings"
+import { ThemeProvider } from '@material-ui/core'
+import { createMuiTheme } from '@material-ui/core/styles';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import SettingsIcon from "@material-ui/icons/Settings"
+import { TwitterPicker } from 'react-color';
+
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 const titleVariants = {
     hover: {
@@ -56,6 +74,10 @@ function HideOnScroll(props) {
 
 const Navbar = (props) => {
     const classes = useStyles();
+
+    var path = window.location.pathname
+    
+    const [currentPath, setCurrentPath] = useState(path)
 
     const [mobileOpen, setMobileOpen] = useState(false);
     const mobile = useMediaQuery('(max-width:750px)');
@@ -94,93 +116,398 @@ const Navbar = (props) => {
         }
         prevOpen.current = open;
     }, [open]);
-  
+    
+    const [darkState, setDarkState] = useState(false);
+    const palletType = darkState ? "dark" : "light";
+    const [primaryColor, setPrimaryColor] = useState(blue[400])
+    const primaryText = darkState ? "#fff": "rgba(0, 0, 0, 0.87)"
+
+    const theme = createMuiTheme({
+        palette: {
+            type: palletType,
+            primary: {
+                main: primaryColor
+            },
+        },
+    });
+
+    const [settingsOpen, setSettingsOpen] = useState(false);
+
+    const handleSettingsOpen = () => {
+        setSettingsOpen(true);
+    };
+
+    const handleSettingsClose = ({newColor}) => {
+        setSettingsOpen(false);
+        console.log(newColor)
+    };
+
+    const toggleChecked = () => {
+        setDarkState((prev) => !prev)
+    };
+
+    const Settings = () => {
+        
+        const handleChangeComplete = (color) => {
+            setPrimaryColor(color.hex);
+        };
+        return (
+            <div>
+                <IconButton onClick={handleSettingsOpen} style={{padding: "5px", color: "#ccc"}}>
+                    <SettingsIcon />
+                </IconButton>
+                <Dialog open={settingsOpen} onClose={handleSettingsClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Settings</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Pick your preferred theme color below:
+                        </DialogContentText>
+                        <TwitterPicker 
+                            triangle="hide" 
+                            color={ primaryColor }
+                            onChangeComplete={ handleChangeComplete }
+                        />
+                    </DialogContent>
+                    <DialogContent>
+                        <DialogContentText style={{display: "inline-block", marginRight: "10px"}}>
+                            Toggle dark mode
+                        </DialogContentText>
+                        <FormGroup style={{display: "inline-block"}}>
+                            <FormControlLabel
+                                control={<Switch checked={darkState} onChange={toggleChecked} color="primary" />}
+                            />
+                        </FormGroup>
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={(newColor) => handleSettingsClose(newColor)} color="primary">
+                        Done
+                    </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+        );
+    }
+
     return (
-        <>
-            <CssBaseline />
-            <HideOnScroll {...props}>
-                <AppBar color="inherit">
-                    <Toolbar>
-                        <motion.div
-                            variants={titleVariants} 
-                            whileHover="hover"
-                        >
-                            <Grid container style={{margin: "10px 0px"}}>
-                                <Grid item>
-                                    <img
-                                        src={Logo}
-                                        style={{width: "40px", height: "40px"}}
-                                        alt="logo"
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <motion.a
-                                        initial={{y: 0}}
-                                        whileHover={{
-                                            color: blue[400]
-                                        }}
-                                        transition={{ duration: 0.2 }}
-                                        href="/home"
-                                        style={{
-                                            textDecoration: "none",
-                                            color: "inherit",
-                                            fontSize: "24px",
-                                            fontWeight: "bold",
-                                            letterSpacing: "0.1rem",
-                                            lineHeight: "40px",
-                                            marginLeft:"8px"
-                                        }}
-                                    >
-                                        AI STUFF
-                                    </motion.a>
-                                </Grid>
-                            </Grid>
-                        </motion.div>
-                        <div style={{marginLeft: "auto"}}>
-                            {mobile ? 
-                                (
-                                    <>
-                                        <IconButton
-                                            color="inherit"
-                                            aria-label="open drawer"
-                                            edge="start"
-                                            onClick={handleDrawerToggle}
-                                            className={classes.menuButton}
-                                        >
-                                            <MenuIcon />
-                                        </IconButton>
-                                         <SwipeableDrawer
-                                            variant="temporary"
-                                            anchor={'right'}
-                                            open={mobileOpen}
-                                            onClose={handleDrawerToggle}
-                                            ModalProps={{
-                                                keepMounted: true, 
+        <ThemeProvider theme={theme}>
+            <div className={classes.root}>
+                <CssBaseline />
+                <HideOnScroll {...props}>
+                    <AppBar color="inherit">
+                        <Toolbar>
+                            <motion.div
+                                variants={titleVariants} 
+                                whileHover="hover"
+                            >
+                                <Grid container style={{margin: "10px 0px"}}>
+                                    <Grid item>
+                                        <Link 
+                                            component={NavLink}
+                                            to="/"
+                                            style={{
+                                                textDecoration: "none",
+                                                color: "primary",
+                                                fontSize: "24px",
+                                                fontWeight: "bold",
+                                                letterSpacing: "0.1rem",
+                                                lineHeight: "40px",
+                                                marginLeft:"8px"
                                             }}
-                                            style={{width: "240px"}}
+                                            onClick={() => setCurrentPath("/")}
                                         >
-                                            <IconButton style={{width: "40px", height: "40px", marginRight: "auto", margin: "10px 0px 0px 10px"}} onClick={handleDrawerToggle}>
-                                                <CloseIcon />
+                                            AI STUFF
+                                        </Link>
+                                    </Grid>
+                                </Grid>
+                            </motion.div>
+                            <div style={{marginLeft: "auto"}}>
+                                {mobile ? 
+                                    (
+                                        <>
+                                            <IconButton
+                                                color="inherit"
+                                                aria-label="open drawer"
+                                                edge="start"
+                                                onClick={handleDrawerToggle}
+                                                className={classes.menuButton}
+                                            >
+                                                <MenuIcon />
                                             </IconButton>
-                                            <div style={{width: "240px", padding: "10px", textAlign: "center"}}>
-                                                <br></br>
-                                                <br></br>
-                                                <motion.div
-                                                initial={{y: 0}}
-                                                whileHover={{
-                                                    y: -2,
+                                            <SwipeableDrawer
+                                                variant="temporary"
+                                                anchor={'right'}
+                                                open={mobileOpen}
+                                                onClose={handleDrawerToggle}
+                                                ModalProps={{
+                                                    keepMounted: true, 
                                                 }}
-                                                transition={{ duration: 0.2 }}>
+                                                style={{width: "240px"}}
+                                            >
+                                                <IconButton style={{width: "40px", height: "40px", marginRight: "auto", margin: "10px 0px 0px 10px"}} onClick={handleDrawerToggle}>
+                                                    <CloseIcon />
+                                                </IconButton>
+                                                <div style={{width: "240px", padding: "10px", textAlign: "center"}}>
+                                                    <br></br>
+                                                    <br></br>
                                                     <motion.a
                                                         initial={{y: 0}}
                                                         whileHover={{
-                                                            color: blue[400]
+                                                            y: -2,
+                                                            color: primaryColor
                                                         }}
-                                                        whileTap={{
-                                                            color: blue[400]
+                                                        style={{color: primaryText}}
+                                                        transition={{ duration: 0.2 }}
+                                                    >
+                                                        <Link 
+                                                            component={NavLink}
+                                                            to="/home"
+                                                            onClick={() => setCurrentPath("/home")}
+                                                            style={{
+                                                                textDecoration: "none",
+                                                                fontSize: "15px",
+                                                                letterSpacing: "0.08rem",
+                                                            }}
+                                                        >
+                                                            Home
+                                                        </Link>
+                                                    </motion.a>
+                                                    <br></br>
+                                                    <motion.div
+                                                    initial={{y: 0}}
+                                                    whileHover={{
+                                                        y: -2,
+                                                    }}
+                                                    transition={{ duration: 0.2 }}>
+                                                        <motion.a
+                                                            initial={{y: 0}}
+                                                            whileHover={{
+                                                                color: primaryColor
+                                                            }}
+                                                            whileTap={{
+                                                                color: primaryColor
+                                                            }}
+                                                            transition={{ duration: 0.2 }}
+                                                            href="#"
+                                                            style={{
+                                                                textDecoration: "none",
+                                                                color: "inherit",
+                                                                fontSize: "15px",
+                                                                letterSpacing: "0.08rem",
+                                                            }}
+                                                        >
+                                                            About
+                                                        </motion.a>
+                                                    </motion.div>
+                                                    <br></br>
+                                                    <motion.div
+                                                    initial={{y: 0}}
+                                                    whileHover={{
+                                                        y: -2,
+                                                    }}
+                                                    transition={{ duration: 0.2 }}>
+                                                        <motion.a
+                                                            initial={{y: 0}}
+                                                            whileHover={{
+                                                                color: primaryColor
+                                                            }}
+                                                            whileTap={{
+                                                                color: primaryColor
+                                                            }}
+                                                            transition={{ duration: 0.2 }}
+                                                            href="#"
+                                                            style={{
+                                                                textDecoration: "none",
+                                                                color: "inherit",
+                                                                fontSize: "15px",
+                                                                letterSpacing: "0.08rem",
+                                                            }}
+                                                        >
+                                                            Resources
+                                                        </motion.a>
+                                                    </motion.div>
+                                                    <br></br>
+                                                    <div>
+                                                        <Button
+                                                            ref={anchorRef}
+                                                            aria-controls={open ? 'menu-list-grow' : undefined}
+                                                            aria-haspopup="true"
+                                                            onClick={handleToggle}
+                                                            style={{textTransform: "none", background: "none", fontSize: "15px", letterSpacing: "0.08rem"}}
+                                                            color="primary"
+                                                        >
+                                                            Projects &nbsp;{open ? <ExpandLessIcon /> : <ExpandMoreIcon /> }
+                                                        </Button>
+                                                        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                                                        {({ TransitionProps, placement }) => (
+                                                            <Grow
+                                                            {...TransitionProps}
+                                                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                                            >
+                                                            <Paper elevation={4} style={{width: "180px", padding: "16px", textAlign: "center"}}>
+                                                                <ClickAwayListener onClickAway={handleClose}>
+                                                                <div>
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/summarizer"
+                                                                                onClick={() => setCurrentPath("/summarizer")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Article Summarizer
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/imagetotext"
+                                                                                onClick={() => setCurrentPath("/imagetotext")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Image to Text
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
+
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/handwriting"
+                                                                                onClick={() => setCurrentPath("/handwriting")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Handwriting Recognition
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
+
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/linreg"
+                                                                                onClick={() => setCurrentPath("/linreg")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Linear Regression
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
+
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="#"
+                                                                                onClick={() => setCurrentPath("/#")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Object Detection
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
+                                                                    
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="#"
+                                                                                onClick={() => setCurrentPath("#")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Music Generation
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
+                                                                </div>
+                                                            </ClickAwayListener>
+                                                            </Paper>
+                                                            </Grow>
+                                                        )}
+                                                        </Popper>
+                                                    </div>
+                                                </div>
+                                            </SwipeableDrawer>
+                                        </>
+                                    )
+                                    :
+                                        <Grid container direction="row" spacing={5}>
+                                            <Grid item style={{lineHeight: "36px"}}>
+                                                <motion.div
+                                                        initial={{y: 0}}
+                                                        whileHover={{
+                                                            y: -2,
+                                                            color: primaryColor
                                                         }}
                                                         transition={{ duration: 0.2 }}
-                                                        href="/home"
+                                                    >
+                                                    <Link 
+                                                        component={NavLink}
+                                                        to="/home"
+                                                        onClick={() => setCurrentPath("/home")}
                                                         style={{
                                                             textDecoration: "none",
                                                             color: "inherit",
@@ -189,25 +516,22 @@ const Navbar = (props) => {
                                                         }}
                                                     >
                                                         Home
-                                                    </motion.a>
+                                                    </Link>
                                                 </motion.div>
-                                                <br></br>
+                                            </Grid>
+                                            <Grid item style={{lineHeight: "36px"}}>
                                                 <motion.div
-                                                initial={{y: 0}}
-                                                whileHover={{
-                                                    y: -2,
-                                                }}
-                                                transition={{ duration: 0.2 }}>
-                                                    <motion.a
                                                         initial={{y: 0}}
                                                         whileHover={{
-                                                            color: blue[400]
-                                                        }}
-                                                        whileTap={{
-                                                            color: blue[400]
+                                                            y: -2,
+                                                            color: primaryColor
                                                         }}
                                                         transition={{ duration: 0.2 }}
-                                                        href="#"
+                                                    >
+                                                    <Link 
+                                                        component={NavLink}
+                                                        to="#"
+                                                        onClick={() => setCurrentPath("#")}
                                                         style={{
                                                             textDecoration: "none",
                                                             color: "inherit",
@@ -216,25 +540,22 @@ const Navbar = (props) => {
                                                         }}
                                                     >
                                                         About
-                                                    </motion.a>
+                                                    </Link>
                                                 </motion.div>
-                                                <br></br>
+                                            </Grid>
+                                            <Grid item style={{lineHeight: "36px"}}>
                                                 <motion.div
-                                                initial={{y: 0}}
-                                                whileHover={{
-                                                    y: -2,
-                                                }}
-                                                transition={{ duration: 0.2 }}>
-                                                    <motion.a
                                                         initial={{y: 0}}
                                                         whileHover={{
-                                                            color: blue[400]
-                                                        }}
-                                                        whileTap={{
-                                                            color: blue[400]
+                                                            y: -2,
+                                                            color: primaryColor
                                                         }}
                                                         transition={{ duration: 0.2 }}
-                                                        href="#"
+                                                    >
+                                                    <Link 
+                                                        component={NavLink}
+                                                        to="#"
+                                                        onClick={() => setCurrentPath("#")}
                                                         style={{
                                                             textDecoration: "none",
                                                             color: "inherit",
@@ -243,9 +564,10 @@ const Navbar = (props) => {
                                                         }}
                                                     >
                                                         Resources
-                                                    </motion.a>
+                                                    </Link>
                                                 </motion.div>
-                                                <br></br>
+                                            </Grid>
+                                            <Grid item>
                                                 <div>
                                                     <Button
                                                         ref={anchorRef}
@@ -267,102 +589,141 @@ const Navbar = (props) => {
                                                             <ClickAwayListener onClickAway={handleClose}>
                                                                 <div>
                                                                     <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                        <motion.a
-                                                                            whileHover={{
-                                                                                color: blue[400]
-                                                                            }}
-                                                                            transition={{ duration: 0.4 }}
-                                                                            href="/summarizer"
-                                                                            style={{
-                                                                                textDecoration: "none",
-                                                                                color: "inherit",
-                                                                                textAlign: "center"
-                                                                            }}
-                                                                        >
-                                                                            Article Summarizer
-                                                                        </motion.a>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/summarizer"
+                                                                                onClick={() => setCurrentPath("/summarizer")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Article Summarizer
+                                                                            </Link>
+                                                                        </motion.div>
                                                                     </div>
                                                                     <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                        <motion.a
-                                                                            whileHover={{
-                                                                                color: blue[400]
-                                                                            }}
-                                                                            transition={{ duration: 0.4 }}
-                                                                            href="/imagetotext"
-                                                                            style={{
-                                                                                textDecoration: "none",
-                                                                                color: "inherit",
-                                                                                textAlign: "center"
-                                                                            }}
-                                                                        >
-                                                                            Image to text
-                                                                        </motion.a>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/imagetotext"
+                                                                                onClick={() => setCurrentPath("/imagetotext")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Image to Text
+                                                                            </Link>
+                                                                        </motion.div>
                                                                     </div>
+
                                                                     <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                        <motion.a
-                                                                            whileHover={{
-                                                                                color: blue[400]
-                                                                            }}
-                                                                            transition={{ duration: 0.2 }}
-                                                                            href="/handwriting"
-                                                                            style={{
-                                                                                textDecoration: "none",
-                                                                                color: "inherit",
-                                                                                textAlign: "center"
-                                                                            }}
-                                                                        >
-                                                                            Handwriting Recognition
-                                                                        </motion.a>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/handwriting"
+                                                                                onClick={() => setCurrentPath("/handwriting")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Handwriting Recognition
+                                                                            </Link>
+                                                                        </motion.div>
                                                                     </div>
+
                                                                     <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                        <motion.a
-                                                                            whileHover={{
-                                                                                color: blue[400]
-                                                                            }}
-                                                                            transition={{ duration: 0.2 }}
-                                                                            href="/linreg"
-                                                                            style={{
-                                                                                textDecoration: "none",
-                                                                                color: "inherit",
-                                                                                textAlign: "center"
-                                                                            }}
-                                                                        >
-                                                                            Linear Regression
-                                                                        </motion.a>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="/linreg"
+                                                                                onClick={() => setCurrentPath("/linreg")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Linear Regression
+                                                                            </Link>
+                                                                        </motion.div>
                                                                     </div>
+
                                                                     <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="#"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Webcam Object Detection
-                                                                    </motion.a>
-                                                                </div>
-                                                                
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="#"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Music Generation
-                                                                    </motion.a>
-                                                                </div>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="#"
+                                                                                onClick={() => setCurrentPath("/#")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Object Detection
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
+                                                                    
+                                                                    <div style={{textAlign: "center", marginBottom: "10px"}}>
+                                                                        <motion.div
+                                                                                initial={{y: 0}}
+                                                                                whileHover={{
+                                                                                    color: primaryColor
+                                                                                }}
+                                                                                transition={{ duration: 0.2 }}
+                                                                            >
+                                                                            <Link 
+                                                                                component={NavLink}
+                                                                                to="#"
+                                                                                onClick={() => setCurrentPath("#")}
+                                                                                style={{
+                                                                                    textDecoration: "none",
+                                                                                    color: "inherit",
+                                                                                    fontSize: "15px",
+                                                                                }}
+                                                                            >
+                                                                                Music Generation
+                                                                            </Link>
+                                                                        </motion.div>
+                                                                    </div>
                                                                 </div>
                                                             </ClickAwayListener>
                                                         </Paper>
@@ -370,227 +731,23 @@ const Navbar = (props) => {
                                                     )}
                                                     </Popper>
                                                 </div>
-                                            </div>
-                                        </SwipeableDrawer>
-                                    </>
-                                )
-                                :
-                                    <Grid container direction="row" spacing={5}>
-                                        <Grid item style={{lineHeight: "36px"}}>
-                                            <motion.div
-                                            initial={{y: 0}}
-                                            whileHover={{
-                                                y: -2,
-                                            }}
-                                            transition={{ duration: 0.2 }}>
-                                                <motion.a
-                                                    initial={{y: 0}}
-                                                    whileHover={{
-                                                        color: blue[400]
-                                                    }}
-                                                    transition={{ duration: 0.2 }}
-                                                    href="/home"
-                                                    style={{
-                                                        textDecoration: "none",
-                                                        color: "inherit",
-                                                        fontSize: "15px",
-                                                        letterSpacing: "0.08rem",
-                                                    }}
-                                                >
-                                                    Home
-                                                </motion.a>
-                                            </motion.div>
-                                        </Grid>
-                                        <Grid item style={{lineHeight: "36px"}}>
-                                            <motion.div
-                                            initial={{y: 0}}
-                                            whileHover={{
-                                                y: -2,
-                                            }}
-                                            transition={{ duration: 0.2 }}>
-                                                <motion.a
-                                                    initial={{y: 0}}
-                                                    whileHover={{
-                                                        color: blue[400]
-                                                    }}
-                                                    transition={{ duration: 0.2 }}
-                                                    href="#"
-                                                    style={{
-                                                        textDecoration: "none",
-                                                        color: "inherit",
-                                                        fontSize: "15px",
-                                                        letterSpacing: "0.08rem",
-                                                    }}
-                                                >
-                                                    About
-                                                </motion.a>
-                                            </motion.div>
-                                        </Grid>
-                                        <Grid item style={{lineHeight: "36px"}}>
-                                            <motion.div
-                                            initial={{y: 0}}
-                                            whileHover={{
-                                                y: -2,
-                                            }}
-                                            transition={{ duration: 0.2 }}>
-                                                <motion.a
-                                                    initial={{y: 0}}
-                                                    whileHover={{
-                                                        color: blue[400]
-                                                    }}
-                                                    transition={{ duration: 0.2 }}
-                                                    href="#"
-                                                    style={{
-                                                        textDecoration: "none",
-                                                        color: "inherit",
-                                                        fontSize: "15px",
-                                                        letterSpacing: "0.08rem",
-                                                    }}
-                                                >
-                                                    Resources
-                                                </motion.a>
-                                            </motion.div>
-                                        </Grid>
-                                        <Grid item>
-                                            <div>
-                                                <Button
-                                                    ref={anchorRef}
-                                                    aria-controls={open ? 'menu-list-grow' : undefined}
-                                                    aria-haspopup="true"
-                                                    onClick={handleToggle}
-                                                    style={{textTransform: "none", background: "none", fontSize: "15px", letterSpacing: "0.08rem"}}
-                                                    color="primary"
-                                                >
-                                                    Projects &nbsp;{open ? <ExpandLessIcon /> : <ExpandMoreIcon /> }
-                                                </Button>
-                                                <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-                                                {({ TransitionProps, placement }) => (
-                                                    <Grow
-                                                    {...TransitionProps}
-                                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                                                    >
-                                                    <Paper elevation={4} style={{width: "180px", padding: "16px", textAlign: "center"}}>
-                                                        <ClickAwayListener onClickAway={handleClose}>
-                                                            <div>
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="/summarizer"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Article Summarizer
-                                                                    </motion.a>
-                                                                </div>
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="/imagetotext"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Image to text
-                                                                    </motion.a>
-                                                                </div>
-
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="/handwriting"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Handwriting Recognition
-                                                                    </motion.a>
-                                                                </div>
-
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="/linreg"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Linear Regression
-                                                                    </motion.a>
-                                                                </div>
-
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="#"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Webcam Object Detection
-                                                                    </motion.a>
-                                                                </div>
-                                                                
-                                                                <div style={{textAlign: "center", marginBottom: "10px"}}>
-                                                                    <motion.a
-                                                                        whileHover={{
-                                                                            color: blue[400]
-                                                                        }}
-                                                                        transition={{ duration: 0.2 }}
-                                                                        href="#"
-                                                                        style={{
-                                                                            textDecoration: "none",
-                                                                            color: "inherit",
-                                                                            textAlign: "center"
-                                                                        }}
-                                                                    >
-                                                                        Music Generation
-                                                                    </motion.a>
-                                                                </div>
-                                                            </div>
-                                                        </ClickAwayListener>
-                                                    </Paper>
-                                                    </Grow>
-                                                )}
-                                                </Popper>
-                                            </div>
-                                        </Grid>
-                                        <Grid item style={{lineHeight: "36px", paddingLeft: "0px"}}>
-                                            <Settings />
-                                        </Grid>
-                                </Grid>
-                            }
-                            
-                        </div>
-                    </Toolbar>
-                </AppBar>
-            </HideOnScroll>
-        </>
+                                            </Grid>
+                                            <Grid item style={{lineHeight: "36px", paddingLeft: "0px"}}>
+                                                <Settings />
+                                            </Grid>
+                                    </Grid>
+                                }
+                                
+                            </div>
+                        </Toolbar>
+                    </AppBar>
+                </HideOnScroll>
+                <main className={classes.content}>
+                    <Toolbar />
+                    {props.children}
+                </main>
+            </div>
+        </ThemeProvider>
     )
 }
 export default Navbar;
