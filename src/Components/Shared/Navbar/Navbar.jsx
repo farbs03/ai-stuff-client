@@ -249,13 +249,13 @@ const Navbar = (props) => {
                                                 <div style={{width: "240px", padding: "10px", textAlign: "center"}}>
                                                     <br></br>
                                                     <br></br>
-                                                    <motion.a
+                                                    <Settings />
+                                                    <br></br>
+                                                    <motion.div
                                                         initial={{y: 0}}
                                                         whileHover={{
-                                                            y: -2,
                                                             color: primaryColor
                                                         }}
-                                                        style={{color: primaryText}}
                                                         transition={{ duration: 0.2 }}
                                                     >
                                                         <Link 
@@ -264,66 +264,57 @@ const Navbar = (props) => {
                                                             onClick={() => setCurrentPath("/home")}
                                                             style={{
                                                                 textDecoration: "none",
+                                                                color: "inherit",
                                                                 fontSize: "15px",
-                                                                letterSpacing: "0.08rem",
+                                                                letterSpacing: "0.08rem"
                                                             }}
                                                         >
                                                             Home
                                                         </Link>
-                                                    </motion.a>
-                                                    <br></br>
-                                                    <motion.div
-                                                    initial={{y: 0}}
-                                                    whileHover={{
-                                                        y: -2,
-                                                    }}
-                                                    transition={{ duration: 0.2 }}>
-                                                        <motion.a
-                                                            initial={{y: 0}}
-                                                            whileHover={{
-                                                                color: primaryColor
-                                                            }}
-                                                            whileTap={{
-                                                                color: primaryColor
-                                                            }}
-                                                            transition={{ duration: 0.2 }}
-                                                            href="#"
-                                                            style={{
-                                                                textDecoration: "none",
-                                                                color: "inherit",
-                                                                fontSize: "15px",
-                                                                letterSpacing: "0.08rem",
-                                                            }}
-                                                        >
-                                                            About
-                                                        </motion.a>
                                                     </motion.div>
                                                     <br></br>
                                                     <motion.div
-                                                    initial={{y: 0}}
-                                                    whileHover={{
-                                                        y: -2,
-                                                    }}
-                                                    transition={{ duration: 0.2 }}>
-                                                        <motion.a
-                                                            initial={{y: 0}}
-                                                            whileHover={{
-                                                                color: primaryColor
-                                                            }}
-                                                            whileTap={{
-                                                                color: primaryColor
-                                                            }}
-                                                            transition={{ duration: 0.2 }}
-                                                            href="#"
+                                                        initial={{y: 0}}
+                                                        whileHover={{
+                                                            color: primaryColor
+                                                        }}
+                                                        transition={{ duration: 0.2 }}
+                                                    >
+                                                        <Link 
+                                                            component={NavLink}
+                                                            to="/home"
+                                                            onClick={() => setCurrentPath("/home")}
                                                             style={{
                                                                 textDecoration: "none",
                                                                 color: "inherit",
                                                                 fontSize: "15px",
-                                                                letterSpacing: "0.08rem",
+                                                                letterSpacing: "0.08rem"
+                                                            }}
+                                                        >
+                                                            About
+                                                        </Link>
+                                                    </motion.div>
+                                                    <br></br>
+                                                    <motion.div
+                                                        initial={{y: 0}}
+                                                        whileHover={{
+                                                            color: primaryColor
+                                                        }}
+                                                        transition={{ duration: 0.2 }}
+                                                    >
+                                                        <Link 
+                                                            component={NavLink}
+                                                            to="/home"
+                                                            onClick={() => setCurrentPath("/home")}
+                                                            style={{
+                                                                textDecoration: "none",
+                                                                color: "inherit",
+                                                                fontSize: "15px",
+                                                                letterSpacing: "0.08rem"
                                                             }}
                                                         >
                                                             Resources
-                                                        </motion.a>
+                                                        </Link>
                                                     </motion.div>
                                                     <br></br>
                                                     <div>
