@@ -6,6 +6,8 @@ import Home from "./Components/Home/Home"
 import ImageToText from "./Components/ImageToText/ImageToText"
 import Handwriting from "./Components/Handwriting/Handwriting"
 import LinearRegression from "./Components/LinearRegression/LinearRegression"
+import ObjectDetection from "./Components/ObjectDetection/ObjectDetection"
+
 import Navbar from "./Components/Shared/Navbar/Navbar"
 
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -22,6 +24,7 @@ const App = () => {
         <Route exact path="/imagetotext" component={ImageToText}/>
         <Route exact path="/handwriting" component={Handwriting}/>
         <Route exact path="/linreg" component={LinearRegression}/>
+        <Route exact path="/objectdetection" component={ObjectDetection}/>
         <Route exact path="/home" component={Home}/>
         <Route exact path="/" component={Home}/>
       </Navbar>

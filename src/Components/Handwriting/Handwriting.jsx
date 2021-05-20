@@ -27,7 +27,7 @@ function downloadURI(uri, name) {
     document.body.removeChild(link);
 }
 
-const Handwriting = ({ width, height }) => {
+const Handwriting = () => {
     const [tool, setTool] = useState('pen');
     const [lines, setLines] = useState([]);
     const isDrawing = useRef(false);
@@ -79,7 +79,7 @@ const Handwriting = ({ width, height }) => {
     }
     return (
         <div>
-            <div style={{textAlign: "center", width: "350px", height: "350px", margin: "10px auto"}}>
+            <div style={{textAlign: "center"}}>
 
                 <FormControl>
                     <Select
@@ -112,7 +112,7 @@ const Handwriting = ({ width, height }) => {
 
                 <br></br>
 
-                <div style={{width: "350px", height: "350px", border:"1px solid", cursor: "crosshair"}}>
+                <div style={{width: "350px", height: "350px", border:"1px solid", cursor: "crosshair", margin: "10px auto"}}>
                     <Stage
                         width={350}
                         height={350}

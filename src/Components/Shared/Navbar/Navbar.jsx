@@ -26,7 +26,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import {motion} from "framer-motion"
 
 import useStyles from "./Styles"
-import blue from '@material-ui/core/colors/blue';
+import { red, pink, orange, deepOrange, yellow, green, teal, cyan, blue, purple, deepPurple, indigo } from '@material-ui/core/colors';
 import Logo from "./aistuff.png"
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -71,6 +71,9 @@ function HideOnScroll(props) {
         </Slide>
     );
 }
+
+
+const colors = [pink[300], red[400], deepOrange[300], orange[400], "#ffca28", "#00D084", teal[300], cyan[400], blue[400], purple[300], "#805AD5", indigo[400]];
 
 const Navbar = (props) => {
     const classes = useStyles();
@@ -439,7 +442,7 @@ const Navbar = (props) => {
                                                                             <Link 
                                                                                 component={NavLink}
                                                                                 to="#"
-                                                                                onClick={() => setCurrentPath("/#")}
+                                                                                onClick={() => setCurrentPath("/objectdetection")}
                                                                                 style={{
                                                                                     textDecoration: "none",
                                                                                     color: "inherit",
@@ -680,8 +683,8 @@ const Navbar = (props) => {
                                                                             >
                                                                             <Link 
                                                                                 component={NavLink}
-                                                                                to="#"
-                                                                                onClick={() => setCurrentPath("/#")}
+                                                                                to="/objectdetection"
+                                                                                onClick={() => setCurrentPath("/objectdetection")}
                                                                                 style={{
                                                                                     textDecoration: "none",
                                                                                     color: "inherit",
